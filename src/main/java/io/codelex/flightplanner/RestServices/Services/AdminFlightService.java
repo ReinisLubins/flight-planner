@@ -1,7 +1,6 @@
 package io.codelex.flightplanner.RestServices.Services;
 
 import io.codelex.flightplanner.AirportAndFlight.AddFlightRequest;
-import io.codelex.flightplanner.AirportAndFlight.Airport;
 import io.codelex.flightplanner.AirportAndFlight.Flight;
 import io.codelex.flightplanner.RestServices.FlightRepository;
 import org.springframework.http.ResponseEntity;
@@ -15,15 +14,15 @@ public class AdminFlightService {
         this.flightRepository = flightRepository;
     }
 
-    public ResponseEntity<Flight> addFlight(AddFlightRequest addFlightRequest) {
+    public synchronized ResponseEntity<Flight> addFlight(AddFlightRequest addFlightRequest) {
         return flightRepository.addFlight(addFlightRequest);
     }
 
-    public void deleteFlight(int id) {
+    public synchronized void deleteFlight(int id) {
         flightRepository.deleteFlight(id);
     }
 
-    public ResponseEntity<Flight> fetchFlight(int id) {
+    public synchronized ResponseEntity<Flight> fetchFlight(int id) {
         return flightRepository.fetchFlight(id);
     }
 

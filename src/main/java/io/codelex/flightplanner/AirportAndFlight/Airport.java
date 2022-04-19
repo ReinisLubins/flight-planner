@@ -1,7 +1,6 @@
 package io.codelex.flightplanner.AirportAndFlight;
 
 import javax.validation.constraints.NotBlank;
-import java.util.Locale;
 import java.util.Objects;
 
 public class Airport {

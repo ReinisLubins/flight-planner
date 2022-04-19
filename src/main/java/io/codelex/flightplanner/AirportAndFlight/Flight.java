@@ -1,24 +1,27 @@
 package io.codelex.flightplanner.AirportAndFlight;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Objects;
 
 public class Flight {
     private int id;
     private Airport from;
     private Airport to;
     private String carrier;
-    private String departureTime;
-    private String arrivalTime;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
+    private LocalDateTime departureTime;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
+    private LocalDateTime arrivalTime;
+    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
     public Flight(int id, AddFlightRequest addFlightRequest) {
         this.id = id;
         this.from = addFlightRequest.getFrom();
         this.to = addFlightRequest.getTo();
         this.carrier = addFlightRequest.getCarrier();
-        this.departureTime = addFlightRequest.getDepartureTime();
-        this.arrivalTime = addFlightRequest.getArrivalTime();
+        this.departureTime = LocalDateTime.parse(addFlightRequest.getDepartureTime(), formatter);
+        this.arrivalTime = LocalDateTime.parse(addFlightRequest.getArrivalTime(), formatter);
     }
 
     public int getId() {
@@ -53,19 +56,23 @@ public class Flight {
         this.carrier = carrier;
     }
 
-    public String getDepartureTime() {
+    public LocalDateTime getDepartureTime() {
         return departureTime;
     }
 
-    public void setDepartureTime(String departureTime) {
+    public void setDepartureTime(LocalDateTime departureTime) {
         this.departureTime = departureTime;
     }
 
-    public String getArrivalTime() {
+    public LocalDateTime getArrivalTime() {
         return arrivalTime;
     }
 
-    public void setArrivalTime(String arrivalTime) {
+    public void setArrivalTime(LocalDateTime arrivalTime) {
         this.arrivalTime = arrivalTime;
+    }
+
+    public DateTimeFormatter getFormatter() {
+        return formatter;
     }
 }
