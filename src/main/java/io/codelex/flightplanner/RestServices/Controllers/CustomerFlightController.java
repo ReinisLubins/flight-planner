@@ -5,7 +5,6 @@ import io.codelex.flightplanner.AirportAndFlight.Flight;
 import io.codelex.flightplanner.AirportAndFlight.PageResult;
 import io.codelex.flightplanner.AirportAndFlight.SearchFlightsRequest;
 import io.codelex.flightplanner.RestServices.Services.CustomerFlightService;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -32,7 +31,7 @@ public class CustomerFlightController {
     }
 
     @GetMapping("flights/{id}")
-    public ResponseEntity<Flight> findFlightById(@PathVariable int id) {
+    public Flight findFlightById(@PathVariable int id) {
         return customerFlightService.findFlightById(id);
     }
 }

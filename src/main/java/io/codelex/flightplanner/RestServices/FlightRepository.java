@@ -2,7 +2,6 @@ package io.codelex.flightplanner.RestServices;
 
 import io.codelex.flightplanner.AirportAndFlight.*;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -21,17 +20,17 @@ public class FlightRepository {
         flights.clear();
     }
 
-    public synchronized ResponseEntity<Flight> addFlight(AddFlightRequest addFlightRequest) {
+    public synchronized Flight addFlight(AddFlightRequest addFlightRequest) {
         Flight flight = new Flight(idCounter, addFlightRequest);
 
         if (flight.getFrom().equals(flight.getTo()) || strangeDates(flight)) {
-            return new ResponseEntity<>(flight, HttpStatus.BAD_REQUEST);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         } else if (!flightIsInList(flight)) {
             idCounter++;
             flights.add(flight);
-            return new ResponseEntity<>(flight, HttpStatus.CREATED);
+            return flight;
         } else {
-            return new ResponseEntity<>(flight, HttpStatus.CONFLICT);
+            throw new ResponseStatusException(HttpStatus.CONFLICT);
         }
     }
 
@@ -44,7 +43,7 @@ public class FlightRepository {
         }
     }
 
-    public synchronized ResponseEntity<Flight> fetchFlight(int id) {
+    public synchronized Flight fetchFlight(int id) {
         Flight foundFlight = null;
         for (Flight flight : flights) {
             if (flight.getId() == id) {
@@ -53,9 +52,9 @@ public class FlightRepository {
         }
 
         if (foundFlight != null) {
-            return new ResponseEntity<>(foundFlight, HttpStatus.OK);
+            return foundFlight;
         } else {
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
     }
 

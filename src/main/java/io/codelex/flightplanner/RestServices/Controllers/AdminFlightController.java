@@ -3,7 +3,7 @@ package io.codelex.flightplanner.RestServices.Controllers;
 import io.codelex.flightplanner.AirportAndFlight.AddFlightRequest;
 import io.codelex.flightplanner.AirportAndFlight.Flight;
 import io.codelex.flightplanner.RestServices.Services.AdminFlightService;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -18,7 +18,8 @@ public class AdminFlightController {
     }
 
     @PutMapping("/flights")
-    public synchronized ResponseEntity<Flight> addFlight(@Valid @RequestBody AddFlightRequest addFlightRequest) {
+    @ResponseStatus(HttpStatus.CREATED)
+    public synchronized Flight addFlight(@Valid @RequestBody AddFlightRequest addFlightRequest) {
         return flightService.addFlight(addFlightRequest);
     }
 
@@ -28,7 +29,7 @@ public class AdminFlightController {
     }
 
     @GetMapping("/flights/{id}")
-    public synchronized ResponseEntity<Flight> fetchFlight(@PathVariable int id) {
+    public synchronized Flight fetchFlight(@PathVariable int id) {
         return flightService.fetchFlight(id);
     }
 }

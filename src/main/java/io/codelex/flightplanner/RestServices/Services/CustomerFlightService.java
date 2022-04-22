@@ -5,7 +5,6 @@ import io.codelex.flightplanner.AirportAndFlight.Flight;
 import io.codelex.flightplanner.AirportAndFlight.PageResult;
 import io.codelex.flightplanner.AirportAndFlight.SearchFlightsRequest;
 import io.codelex.flightplanner.RestServices.FlightRepository;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,7 +21,7 @@ public class CustomerFlightService {
         return flightRepository.searchAirports(search);
     }
 
-    public ResponseEntity<Flight> findFlightById(int id) {
+    public Flight findFlightById(int id) {
         return flightRepository.fetchFlight(id);
     }
 
