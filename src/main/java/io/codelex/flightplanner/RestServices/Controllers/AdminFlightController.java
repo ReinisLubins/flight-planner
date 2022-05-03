@@ -19,17 +19,17 @@ public class AdminFlightController {
 
     @PutMapping("/flights")
     @ResponseStatus(HttpStatus.CREATED)
-    public synchronized Flight addFlight(@Valid @RequestBody AddFlightRequest addFlightRequest) {
+    public Flight addFlight(@Valid @RequestBody AddFlightRequest addFlightRequest) {
         return flightService.addFlight(addFlightRequest);
     }
 
     @DeleteMapping("/flights/{id}")
-    public synchronized void deleteFlight(@PathVariable int id) {
+    public void deleteFlight(@PathVariable long id) {
         flightService.deleteFlight(id);
     }
 
     @GetMapping("/flights/{id}")
-    public synchronized Flight fetchFlight(@PathVariable int id) {
+    public Flight fetchFlight(@PathVariable long id) {
         return flightService.fetchFlight(id);
     }
 }

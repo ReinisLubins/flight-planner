@@ -14,10 +14,8 @@ public class AddFlightRequest {
     @NotBlank
     private String carrier;
     @NotBlank
-    @Valid
     private String departureTime;
     @NotBlank
-    @Valid
     private String arrivalTime;
 
     public AddFlightRequest(Airport from, Airport to, String carrier, String departureTime, String arrivalTime) {

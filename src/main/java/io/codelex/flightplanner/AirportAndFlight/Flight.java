@@ -1,11 +1,13 @@
 package io.codelex.flightplanner.AirportAndFlight;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class Flight {
-    private int id;
+    private long id;
     private Airport from;
     private Airport to;
     private String carrier;
@@ -15,7 +17,7 @@ public class Flight {
     private LocalDateTime arrivalTime;
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
-    public Flight(int id, AddFlightRequest addFlightRequest) {
+    public Flight(long id, AddFlightRequest addFlightRequest) {
         this.id = id;
         this.from = addFlightRequest.getFrom();
         this.to = addFlightRequest.getTo();
@@ -24,11 +26,11 @@ public class Flight {
         this.arrivalTime = LocalDateTime.parse(addFlightRequest.getArrivalTime(), formatter);
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -74,5 +76,15 @@ public class Flight {
 
     public DateTimeFormatter getFormatter() {
         return formatter;
+    }
+
+    public static boolean searchedFlightsAreEqual(SearchFlightsRequest searchFlightsRequest, Flight flight) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate searchFlightDeparture = LocalDate.parse(searchFlightsRequest.getDepartureDate(), formatter);
+        LocalDate listFlightDeparture = flight.getDepartureTime().toLocalDate();
+
+        return flight.getFrom().getAirport().equals(searchFlightsRequest.getFrom())
+                && flight.getTo().getAirport().equals(searchFlightsRequest.getTo())
+                && listFlightDeparture.equals(searchFlightDeparture);
     }
 }

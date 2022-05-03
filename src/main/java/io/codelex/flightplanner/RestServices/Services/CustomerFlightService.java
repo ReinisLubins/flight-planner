@@ -21,7 +21,7 @@ public class CustomerFlightService {
         return flightRepository.searchAirports(search);
     }
 
-    public Flight findFlightById(int id) {
+    public Flight findFlightById(long id) {
         return flightRepository.fetchFlight(id);
     }
 

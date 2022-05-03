@@ -13,15 +13,15 @@ public class AdminFlightService {
         this.flightRepository = flightRepository;
     }
 
-    public synchronized Flight addFlight(AddFlightRequest addFlightRequest) {
+    public Flight addFlight(AddFlightRequest addFlightRequest) {
         return flightRepository.addFlight(addFlightRequest);
     }
 
-    public synchronized void deleteFlight(int id) {
+    public void deleteFlight(long id) {
         flightRepository.deleteFlight(id);
     }
 
-    public synchronized Flight fetchFlight(int id) {
+    public Flight fetchFlight(long id) {
         return flightRepository.fetchFlight(id);
     }
 
