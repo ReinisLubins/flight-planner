@@ -81,10 +81,10 @@ public class Flight {
     public boolean searchedFlightsAreEqual(SearchFlightsRequest searchFlightsRequest) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate searchFlightDeparture = LocalDate.parse(searchFlightsRequest.getDepartureDate(), formatter);
-        LocalDate listFlightDeparture = Flight.this.getDepartureTime().toLocalDate();
+        LocalDate listFlightDeparture = getDepartureTime().toLocalDate();
 
-        return Flight.this.getFrom().getAirport().equals(searchFlightsRequest.getFrom())
-                && Flight.this.getTo().getAirport().equals(searchFlightsRequest.getTo())
+        return getFrom().getAirport().equals(searchFlightsRequest.getFrom())
+                && getTo().getAirport().equals(searchFlightsRequest.getTo())
                 && listFlightDeparture.equals(searchFlightDeparture);
     }
 }
