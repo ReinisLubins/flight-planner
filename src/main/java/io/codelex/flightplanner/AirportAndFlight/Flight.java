@@ -78,13 +78,13 @@ public class Flight {
         return formatter;
     }
 
-    public static boolean searchedFlightsAreEqual(SearchFlightsRequest searchFlightsRequest, Flight flight) {
+    public boolean searchedFlightsAreEqual(SearchFlightsRequest searchFlightsRequest) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate searchFlightDeparture = LocalDate.parse(searchFlightsRequest.getDepartureDate(), formatter);
-        LocalDate listFlightDeparture = flight.getDepartureTime().toLocalDate();
+        LocalDate listFlightDeparture = Flight.this.getDepartureTime().toLocalDate();
 
-        return flight.getFrom().getAirport().equals(searchFlightsRequest.getFrom())
-                && flight.getTo().getAirport().equals(searchFlightsRequest.getTo())
+        return Flight.this.getFrom().getAirport().equals(searchFlightsRequest.getFrom())
+                && Flight.this.getTo().getAirport().equals(searchFlightsRequest.getTo())
                 && listFlightDeparture.equals(searchFlightDeparture);
     }
 }

@@ -4,6 +4,7 @@ import io.codelex.flightplanner.AirportAndFlight.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.server.ResponseStatusException;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +44,7 @@ public class FlightRepository {
     public Flight fetchFlight(long id) {
         return flights
                 .stream()
-                .filter((Flight flight) -> flight.getId() == id).findFirst()
+                .filter(flight -> flight.getId() == id).findFirst()
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
@@ -69,18 +70,13 @@ public class FlightRepository {
     }
 
     private boolean flightIsInList(Flight flight) {
-        boolean isEqual = false;
-        for (Flight listFlight : flights) {
-            if (flight.getFrom().equals(listFlight.getFrom())
-                    && flight.getTo().equals(listFlight.getTo())
-                    && flight.getCarrier().equals(listFlight.getCarrier())
-                    && flight.getDepartureTime().equals(listFlight.getDepartureTime())
-                    && flight.getArrivalTime().equals(listFlight.getArrivalTime())) {
-                isEqual = true;
-                break;
-            }
-        }
-        return isEqual;
+        return flights.stream()
+                .anyMatch(listFlight -> flight.getFrom().equals(listFlight.getFrom())
+                && flight.getTo().equals(listFlight.getTo())
+                && flight.getCarrier().equals(listFlight.getCarrier())
+                && flight.getDepartureTime().equals(listFlight.getDepartureTime())
+                && flight.getArrivalTime().equals(listFlight.getArrivalTime()));
+
     }
 
     private List<Flight> searchedFlightsFound(SearchFlightsRequest searchFlightsRequest) {
@@ -91,7 +87,7 @@ public class FlightRepository {
         }
 
         for (Flight listFlight : flights) {
-            if (Flight.searchedFlightsAreEqual(searchFlightsRequest, listFlight)) {
+            if (listFlight.searchedFlightsAreEqual(searchFlightsRequest)) {
                 foundFlights.add(listFlight);
             }
         }
