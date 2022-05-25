@@ -1,4 +1,4 @@
-package io.codelex.flightplanner.Security;
+package io.codelex.flightplanner.configuration;
 
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;

@@ -1,4 +1,6 @@
-package io.codelex.flightplanner.AirportAndFlight;
+package io.codelex.flightplanner.request;
+
+import io.codelex.flightplanner.domain.Airport;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;

@@ -1,4 +1,4 @@
-package io.codelex.flightplanner.AirportAndFlight;
+package io.codelex.flightplanner.domain;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;

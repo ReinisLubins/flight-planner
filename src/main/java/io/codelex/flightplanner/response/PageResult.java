@@ -1,4 +1,4 @@
-package io.codelex.flightplanner.AirportAndFlight;
+package io.codelex.flightplanner.response;
 
 import java.util.List;
 

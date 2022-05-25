@@ -1,8 +1,8 @@
-package io.codelex.flightplanner.RestServices.Controllers;
+package io.codelex.flightplanner.controllers;
 
-import io.codelex.flightplanner.AirportAndFlight.AddFlightRequest;
-import io.codelex.flightplanner.AirportAndFlight.Flight;
-import io.codelex.flightplanner.RestServices.Services.AdminFlightService;
+import io.codelex.flightplanner.request.AddFlightRequest;
+import io.codelex.flightplanner.domain.Flight;
+import io.codelex.flightplanner.service.FlightService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,9 +11,9 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/admin-api")
 public class AdminFlightController {
-    private AdminFlightService flightService;
+    private final FlightService flightService;
 
-    public AdminFlightController(AdminFlightService flightService) {
+    public AdminFlightController(FlightService flightService) {
         this.flightService = flightService;
     }
 
@@ -30,6 +30,6 @@ public class AdminFlightController {
 
     @GetMapping("/flights/{id}")
     public Flight fetchFlight(@PathVariable long id) {
-        return flightService.fetchFlight(id);
+        return flightService.findFlightById(id);
     }
 }

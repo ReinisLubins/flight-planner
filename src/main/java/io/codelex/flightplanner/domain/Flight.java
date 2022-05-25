@@ -1,29 +1,43 @@
-package io.codelex.flightplanner.AirportAndFlight;
+package io.codelex.flightplanner.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-
+import io.codelex.flightplanner.request.AddFlightRequest;
+import io.codelex.flightplanner.request.SearchFlightsRequest;
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+@Entity
 public class Flight {
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Column(name = "flight_id")
     private long id;
+    @JoinColumn(name = "from_id")
+    @ManyToOne
     private Airport from;
+    @JoinColumn(name = "to_id")
+    @ManyToOne
     private Airport to;
     private String carrier;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime departureTime;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime arrivalTime;
+    @Transient
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
-    public Flight(long id, AddFlightRequest addFlightRequest) {
-        this.id = id;
+    public Flight(AddFlightRequest addFlightRequest) {
         this.from = addFlightRequest.getFrom();
         this.to = addFlightRequest.getTo();
         this.carrier = addFlightRequest.getCarrier();
         this.departureTime = LocalDateTime.parse(addFlightRequest.getDepartureTime(), formatter);
         this.arrivalTime = LocalDateTime.parse(addFlightRequest.getArrivalTime(), formatter);
+    }
+
+    public Flight() {
+
     }
 
     public long getId() {
@@ -80,7 +94,7 @@ public class Flight {
 
     public boolean searchedFlightsAreEqual(SearchFlightsRequest searchFlightsRequest) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDate searchFlightDeparture = LocalDate.parse(searchFlightsRequest.getDepartureDate(), formatter);
+        LocalDate searchFlightDeparture = searchFlightsRequest.getDepartureDate();
         LocalDate listFlightDeparture = getDepartureTime().toLocalDate();
 
         return getFrom().getAirport().equals(searchFlightsRequest.getFrom())
