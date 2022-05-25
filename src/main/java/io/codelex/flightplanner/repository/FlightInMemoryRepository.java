@@ -1,29 +1,27 @@
-package io.codelex.flightplanner.RestServices;
+package io.codelex.flightplanner.repository;
 
-import io.codelex.flightplanner.AirportAndFlight.*;
+import io.codelex.flightplanner.domain.Airport;
+import io.codelex.flightplanner.domain.Flight;
+import io.codelex.flightplanner.request.SearchFlightsRequest;
+import io.codelex.flightplanner.response.PageResult;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.server.ResponseStatusException;
-
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-public class FlightRepository {
-    private List<Flight> flights = new ArrayList<>();
-    private int idCounter = 1234;
+public class FlightInMemoryRepository {
+    private final List<Flight> flights = new ArrayList<>();
+    private long idCounter = 1234L;
 
     public void clearFlights() {
         flights.clear();
     }
 
-    public synchronized Flight addFlight(AddFlightRequest addFlightRequest) {
-        Flight flight = new Flight(idCounter, addFlightRequest);
-
-        if (flight.getFrom().equals(flight.getTo()) || invalidDates(flight)) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-        } else if (!flightIsInList(flight)) {
+    public synchronized Flight addFlight(Flight flight) {
+        if (!flightIsInList(flight)) {
+            flight.setId(idCounter);
             idCounter++;
             flights.add(flight);
             return flight;
@@ -41,7 +39,7 @@ public class FlightRepository {
         }
     }
 
-    public Flight fetchFlight(long id) {
+    public Flight findFlightById(long id) {
         return flights
                 .stream()
                 .filter(flight -> flight.getId() == id).findFirst()
@@ -82,22 +80,11 @@ public class FlightRepository {
     private List<Flight> searchedFlightsFound(SearchFlightsRequest searchFlightsRequest) {
         List<Flight> foundFlights = new ArrayList<>();
 
-        if (searchFlightsRequest.getFrom().equals(searchFlightsRequest.getTo())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-        }
-
         for (Flight listFlight : flights) {
             if (listFlight.searchedFlightsAreEqual(searchFlightsRequest)) {
                 foundFlights.add(listFlight);
             }
         }
         return foundFlights;
-    }
-
-    private boolean invalidDates(Flight flight) {
-        LocalDateTime departure = flight.getDepartureTime();
-        LocalDateTime arrival = flight.getArrivalTime();
-
-        return departure.isEqual(arrival) || arrival.isBefore(departure);
     }
 }

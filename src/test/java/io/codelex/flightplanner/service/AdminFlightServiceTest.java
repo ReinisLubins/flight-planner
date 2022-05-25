@@ -1,9 +1,9 @@
-package io.codelex.flightplanner.RestServices.Services;
+package io.codelex.flightplanner.service;
 
-import io.codelex.flightplanner.AirportAndFlight.AddFlightRequest;
-import io.codelex.flightplanner.AirportAndFlight.Airport;
-import io.codelex.flightplanner.AirportAndFlight.Flight;
-import io.codelex.flightplanner.RestServices.FlightRepository;
+import io.codelex.flightplanner.repository.FlightInMemoryRepository;
+import io.codelex.flightplanner.request.AddFlightRequest;
+import io.codelex.flightplanner.domain.Airport;
+import io.codelex.flightplanner.domain.Flight;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,10 +16,10 @@ import org.mockito.junit.jupiter.MockitoExtension;
 public class AdminFlightServiceTest {
 
     @Mock
-    FlightRepository flightRepository;
+    FlightInMemoryRepository flightRepository;
 
     @InjectMocks
-    AdminFlightService adminFlightService;
+    FlightServiceInMemory flightServiceInMemory;
 
     @Test
     public void testAddFlight() {
@@ -30,16 +30,15 @@ public class AdminFlightServiceTest {
 
         //Airport from, Airport to, String carrier, String departureTime, String arrivalTime
         AddFlightRequest addFlightRequest = new AddFlightRequest(from, to, "Good", departureTime, arrivalTime);
+        Flight flight = flightServiceInMemory.addFlight(addFlightRequest);
 
         Mockito.doAnswer(invocation -> {
             AddFlightRequest request = invocation.getArgument(0);
             Assertions.assertEquals(addFlightRequest, request);
-            return new Flight(12, request);
-        }).when(flightRepository).addFlight(addFlightRequest);
+            return new Flight(request);
+        }).when(flightRepository).addFlight(flight);
 
-        Flight flight = adminFlightService.addFlight(addFlightRequest);
-
-        Mockito.verify(flightRepository).addFlight(addFlightRequest);
+        Mockito.verify(flightRepository).addFlight(flight);
     }
 
 }
